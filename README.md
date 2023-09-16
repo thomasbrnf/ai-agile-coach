@@ -14,7 +14,7 @@ PGADMIN_DEFAULT_PASSWORD=pgadmin4
 
 OPENAI_API_KEY={insert-your-openai-api-key-here}
 ```
-After that. Lauch CLI in root of repo, and execute this command, to build and run docker-compose:
+After that. Lauch CLI in root directory, and execute this command, to build and run docker-compose:
 ```docker-compose up --build```
 You are good to go! 
 Client will be listening on ```http://localhost:5173/```
