@@ -3,7 +3,7 @@ import { Typography } from "@mui/material";
 const LOGO_TEXT = "Agile";
 
 const logoStyles = {
-  display: { xs: "none", sm: "block" },
+  display: { xs: "none", md: "block" },
   paddingBottom: 7,
 };
 

@@ -8,7 +8,8 @@ const dotArray = [".", "..", "..."];
 const writingActionStyle = {
   fontSize: "18px",
   color: "#ACADAD",
-  py: 1,
+  p: 0,
+  paddingBottom: 2,
 };
 
 export function WritingStatus() {

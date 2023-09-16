@@ -1,18 +1,22 @@
 import { Paper, Box } from "@mui/material";
-import { useEffect, useState } from "react";
-import io, { Socket } from "socket.io-client";
+import { useEffect } from "react";
 import { MessageInput, Messages, WritingStatus } from "./components";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
-import { Message } from "./interfaces/Message";
-import { receiveMessage, setInitialMessages } from "../../redux/slices/messagesSlice";
-import { pending, recieved } from "../../redux/slices/pendingSlice";
+import {
+  receiveMessage,
+  recieved,
+  recieving,
+  setInitialMessages,
+} from "../../redux/slices/socketSlice";
+import { Message } from "../../interfaces/Message";
+import socket from "../../socket";
 
 const paperStyle = {
   bgcolor: "#F9F9F9",
   borderRadius: { md: "40px 0px 0px 40px" },
   gap: 1,
   height: { xs: "100vh", md: "90vh" },
-  py: 6,
+  py: { xs: 7, md: 5 },
   px: { xs: 2, md: 6 },
   paddingBottom: { xs: 3, md: 7 },
   display: "flex",
@@ -25,58 +29,53 @@ const paperStyle = {
 const boxStyle = {
   width: { lg: "60%" },
   gap: 1,
+  marginTop: 2,
   mx: { sm: 2 },
 };
 
-export function Chat({}) {
-  const [socket, setSocket] = useState<Socket>();
-  const pending = useAppSelector(state => state.pending)
+export function Chat() {
+  const pending = useAppSelector((state) => state.socket.pending);
   const dispatch = useAppDispatch();
 
   const send = (value: string) => {
-    socket?.emit("message", value);
+    socket.emit("request", value);
   };
 
   useEffect(() => {
-    const socket = io("http://localhost:3000");
-    setSocket(socket);
-
-    socket?.emit("allMessages", (messages: Message[]) => {
+    socket.emit("history", (messages: Message[]) => {
       dispatch(setInitialMessages(messages));
     });
-  }, [setSocket]);
+  }, []);
 
   const messageListener = (message: Message) => {
     dispatch(receiveMessage(message));
   };
 
   useEffect(() => {
-    socket?.on("message", messageListener);
+    socket.on("message", messageListener);
     return () => {
-      socket?.off("message", messageListener);
+      socket.off("message", messageListener);
     };
   }, [messageListener]);
 
   useEffect(() => {
-    socket?.on("pending", () => {
-      dispatch(pending())
+    socket.on("pending", () => {
+      dispatch(recieving());
     });
 
-    socket?.on("received", () => {
-      dispatch(recieved())
+    socket.on("received", () => {
+      dispatch(recieved());
     });
-  }, []);
+  }, [socket]);
 
   return (
     <Paper elevation={1} sx={paperStyle}>
-
       <Messages />
 
       <Box sx={boxStyle}>
-       {pending && <WritingStatus />}
+        {pending && <WritingStatus />}
         <MessageInput send={send} />
       </Box>
-
     </Paper>
   );
 }

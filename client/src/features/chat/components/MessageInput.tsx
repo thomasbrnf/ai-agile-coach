@@ -34,7 +34,15 @@ export default function MessageInput({
   send: (val: string) => void;
 }) {
   const [value, setValue] = useState("");
-  const pending = useAppSelector(state => state.pending.status); 
+  const pending = useAppSelector((state) => state.socket.pending);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      send(value);
+      setValue("");
+    }
+  };
 
   return (
     <Box sx={boxStyle}>
@@ -45,6 +53,7 @@ export default function MessageInput({
         onChange={(e) => setValue(e.target.value)}
         placeholder={PLACEHOLDER_TEXT}
         value={value}
+        onKeyDown={handleKeyDown}
         multiline
         maxRows={5}
       />

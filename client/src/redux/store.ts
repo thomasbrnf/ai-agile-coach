@@ -1,16 +1,14 @@
-import { configureStore } from '@reduxjs/toolkit';
-import contentReducer from './slices/contentSlice';
-import pendingReducer from './slices/pendingSlice';
-import messagesReducer from './slices/messagesSlice';
+import { configureStore } from "@reduxjs/toolkit";
+import contentReducer from "./slices/contentSlice";
+import socketReducer from "./slices/socketSlice";
 
 export const store = configureStore({
   reducer: {
     content: contentReducer,
-    pending: pendingReducer,
-    messages: messagesReducer
-  }
-})
+    socket: socketReducer,
+  },
+});
 
-export type RootState = ReturnType<typeof store.getState>
+export type RootState = ReturnType<typeof store.getState>;
 
-export type AppDispatch = typeof store.dispatch
+export type AppDispatch = typeof store.dispatch;

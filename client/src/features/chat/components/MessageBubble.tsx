@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { Message } from "../interfaces/Message";
+import { Message } from "../../../interfaces/Message";
 import { MessageTail } from "./props";
 
 export function MessageBubble({ message }: { message: Message }) {
@@ -14,8 +14,10 @@ export function MessageBubble({ message }: { message: Message }) {
   };
   return (
     <>
-      <Box sx={bubbleStyle} key={message.id} >
-        <Typography style={{ whiteSpace: "pre-line" }}>{message.content}</Typography>
+      <Box sx={bubbleStyle} key={message.id}>
+        <Typography style={{ whiteSpace: "pre-line" }}>
+          {message.content}
+        </Typography>
       </Box>
       <MessageTail variant={message.role === "user" ? "right" : "left"} />
     </>

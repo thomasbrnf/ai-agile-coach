@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MessagesModule } from './messages/messages.module';
+import { AgileCoachModule } from './agile-coach/agile-coach.module';
+import { OpenAiModule } from './openai/openai.module';
 
 @Module({
   imports: [
@@ -20,8 +22,9 @@ import { MessagesModule } from './messages/messages.module';
       }),
       inject: [ConfigService],
     }),
-    MessagesModule
+    AgileCoachModule,
+    MessagesModule,
+    OpenAiModule,
   ],
-
 })
 export class AppModule {}
