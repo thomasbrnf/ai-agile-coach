@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { RootState } from './store'
+import { RootState } from '../store'
 
 interface ContentState {
   current: string
@@ -21,6 +21,6 @@ export const contentSlice = createSlice({
 
 export const { chat } = contentSlice.actions
 
-export const selectCount = (state: RootState) => state.content.current
+export const selectContent = (state: RootState) => state.content.current
 
 export default contentSlice.reducer 

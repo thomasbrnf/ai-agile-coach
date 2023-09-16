@@ -1,6 +1,8 @@
 import { Box } from "@mui/material";
 import { MessageBubble } from "./MessageBubble";
 import { Message } from "../interfaces/Message";
+import { useRef, useEffect } from "react";
+import { useAppSelector } from "../../../hooks/hooks";
 
 const boxStyle = {
   fontSize: "16px",
@@ -12,11 +14,20 @@ const boxStyle = {
   overflowX: "hidden",
 };
 
-export default function Messages({ messages }: { messages: Message[] }) {
+export default function Messages() {
+  const messages = useAppSelector(state => state.messages.content);
+  const boxRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (boxRef.current) {
+      boxRef.current.scrollTo(0, boxRef.current.scrollHeight);
+    }
+  }, [messages]);
+  
   return (
-    <Box sx={boxStyle}>
+    <Box ref={boxRef} sx={boxStyle}>
       {messages.map((message: Message) => (
-        <MessageBubble message={message} />
+        <MessageBubble key={message.id} message={message} />
       ))}
     </Box>
   );

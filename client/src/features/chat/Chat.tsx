@@ -2,7 +2,10 @@ import { Paper, Box } from "@mui/material";
 import { useEffect, useState } from "react";
 import io, { Socket } from "socket.io-client";
 import { MessageInput, Messages, WritingStatus } from "./components";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { Message } from "./interfaces/Message";
+import { receiveMessage, setInitialMessages } from "../../redux/slices/messagesSlice";
+import { pending, recieved } from "../../redux/slices/pendingSlice";
 
 const paperStyle = {
   bgcolor: "#F9F9F9",
@@ -27,7 +30,8 @@ const boxStyle = {
 
 export function Chat({}) {
   const [socket, setSocket] = useState<Socket>();
-  const [messages, setMessages] = useState<Message[]>([]);
+  const pending = useAppSelector(state => state.pending)
+  const dispatch = useAppDispatch();
 
   const send = (value: string) => {
     socket?.emit("message", value);
@@ -37,14 +41,13 @@ export function Chat({}) {
     const socket = io("http://localhost:3000");
     setSocket(socket);
 
-    socket?.emit("allMessages", (response: Message[]) => {
-      setMessages(response);
+    socket?.emit("allMessages", (messages: Message[]) => {
+      dispatch(setInitialMessages(messages));
     });
   }, [setSocket]);
 
   const messageListener = (message: Message) => {
-    setMessages([...messages, message]);
-    console.log(messages);
+    dispatch(receiveMessage(message));
   };
 
   useEffect(() => {
@@ -53,13 +56,27 @@ export function Chat({}) {
       socket?.off("message", messageListener);
     };
   }, [messageListener]);
+
+  useEffect(() => {
+    socket?.on("pending", () => {
+      dispatch(pending())
+    });
+
+    socket?.on("received", () => {
+      dispatch(recieved())
+    });
+  }, []);
+
   return (
     <Paper elevation={1} sx={paperStyle}>
-      <Messages messages={messages} />
+
+      <Messages />
+
       <Box sx={boxStyle}>
-        <WritingStatus />
+       {pending && <WritingStatus />}
         <MessageInput send={send} />
       </Box>
+
     </Paper>
   );
 }

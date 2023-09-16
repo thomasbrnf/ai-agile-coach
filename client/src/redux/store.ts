@@ -1,9 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
-import contentReducer from './contentSlice';
+import contentReducer from './slices/contentSlice';
+import pendingReducer from './slices/pendingSlice';
+import messagesReducer from './slices/messagesSlice';
 
 export const store = configureStore({
   reducer: {
-    content: contentReducer
+    content: contentReducer,
+    pending: pendingReducer,
+    messages: messagesReducer
   }
 })
 

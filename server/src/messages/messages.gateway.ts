@@ -21,11 +21,12 @@ export class MessagesGateway {
 
     this.server.emit('message', message);
 
-    await this.messagesService.getAiModelAnswer()
-    .then(response => console.log(response))
-    .catch(error => console.log(error));
+    this.server.emit('pending');
+    const aiResponse = await this.messagesService.getAiModelAnswer();
+    this.server.emit('received');
 
-    
+    this.server.emit('message', aiResponse);
+
     return message;
   }
 

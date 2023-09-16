@@ -1,8 +1,9 @@
 import { TextField, IconButton, Box } from "@mui/material";
+import { useAppSelector } from "../../../hooks/hooks";
 import { SendIcon } from "./SendIcon";
 import { useState } from "react";
 
-const PLACEHOLDER_TEXT = "Ask me anything that I can help you or your team.. ";
+const PLACEHOLDER_TEXT = "Ask me anything that I can help you or your team..";
 
 const boxStyle = {
   display: "flex",
@@ -33,6 +34,7 @@ export default function MessageInput({
   send: (val: string) => void;
 }) {
   const [value, setValue] = useState("");
+  const pending = useAppSelector(state => state.pending.status); 
 
   return (
     <Box sx={boxStyle}>
@@ -48,7 +50,7 @@ export default function MessageInput({
       />
       <IconButton
         aria-label="send"
-        disabled={value === ""}
+        disabled={value === "" || pending}
         onClick={() => {
           send(value);
           setValue("");
