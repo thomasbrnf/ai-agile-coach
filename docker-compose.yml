@@ -5,6 +5,11 @@ services:
     image: postgres:latest
     restart: always
     container_name: postgres
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     ports:
       - "5430:5430"
     volumes:
