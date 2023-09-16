@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    container_name: postgres
+    ports:
+      - '5430:5430'
+    volumes:
+      - ./db-data/:/var/lib/postgresql/data/
+    env_file:
+      - .env
+    expose:
+      - 5430
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: server
+    environment:
+      - PORT=3000
+    ports:
+      - '3000:3000'
+    depends_on:
+      - postgres
+    volumes:
+      - ./src:/server/src
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    container_name: pgadmin
+    env_file:
+      - .env
+    ports:
+      - '5050:80'
+    depends_on:
+      - postgres
+volumes:
+  pgdata:
