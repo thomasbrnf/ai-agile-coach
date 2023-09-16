@@ -1,4 +1,5 @@
 # ai-agile-coach
+![image](https://github.com/thomasbrnf/ai-agile-coach/assets/57502071/d756306a-f1cd-4d3a-b41d-d82b37ac1ec8)
 
 Quick guide how to start project on your machine. 
 After you successfully pulled repo, go to server folder, and create ```.env``` file with this values: 
