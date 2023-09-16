@@ -1,7 +1,7 @@
 # ai-agile-coach
 
 Quick guide how to start project on your machine. 
-After you successfully pulled repo, go to server folder, and create .env file with this values: 
+After you successfully pulled repo, go to server folder, and create ```.env``` file with this values: 
 ```
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
